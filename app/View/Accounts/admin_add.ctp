@@ -26,7 +26,7 @@ $this -> end();
 			BEGIN PAGE
 			===========================================================
 			-->
-			<?php echo $this -> Form -> create('Accounts',array('action' => 'add', 'name' => 'AccountAddForm', 'novalidate')); ?>
+			<?php echo $this -> Form -> create('Accounts',array('action' => 'add', 'name' => 'AccountAddForm', 'novalidate', 'enctype' => 'multipart/form-data')); ?>
 			<?php echo $this->Session->flash('bad'); ?>
 			<div class="row">
                     <div class="col-lg-12">
@@ -53,7 +53,7 @@ $this -> end();
                                 
                             </div>
                             <div class="form-group checkbox">
-                                <span style="color:black;">Admin cấp cao</span><?php echo $this -> Form -> input('role',array('label' => false, 'error'=> false, 'div' => FALSE,'type' => 'checkbox', 'autofocus' => 'autofocus','value' =>'0'));?>
+                                <span style="color:black;">Admin cấp cao</span><?php echo $this -> Form -> input('role',array('label' => false, 'error'=> false, 'div' => FALSE,'type' => 'checkbox', 'autofocus' => 'autofocus','value' =>'1'));?>
                             </div>
                             <div class="form-group checkbox">
                                 <span style="color:black;">Chặn quyền</span><?php echo $this -> Form -> input('status',array('label' => false, 'error'=> false, 'div' => FALSE,'type' => 'checkbox', 'autofocus' => 'autofocus','value' =>'0'));?>

@@ -19,15 +19,12 @@ $this -> end();
 		<br>
 		<div class="the-box transparent full search-page">
 			<div class="the-box no-margin no-border bg-success" id="search-heading">
-				<?php echo $this -> Form -> create('Account', array('action' => 'index', 'novalidate')) ?>
+				<?php echo $this -> Form -> create('Accounts', array('action' => 'index', 'novalidate')) ?>
 				<div class="form-group has-feedback lg no-label">
-					<?php echo $this -> Form -> input('adminId', array('class' => 'form-control fno-border input-lg', 'placeholder' => 'Admin ID')); ?>
+					<?php echo $this -> Form -> input('username', array('class' => 'form-control fno-border input-lg', 'placeholder' => 'Admin Name')); ?>
 				</div>
 				<div class="form-group has-feedback lg no-label">
-					<?php echo $this -> Form -> input('adminName', array('class' => 'form-control fno-border input-lg', 'placeholder' => 'Admin Name')); ?>
-				</div>
-				<div class="form-group has-feedback lg no-label">
-					<?php echo $this -> Form -> input('adminEmail', array('class' => 'form-control fno-border input-lg', 'placeholder' => 'Admin Email')); ?>
+					<?php echo $this -> Form -> input('email', array('class' => 'form-control fno-border input-lg', 'placeholder' => 'Admin Email')); ?>
 				</div>
 				<div class="text-center">
 					<button class="btn btn-primary" type="reset">
@@ -48,12 +45,14 @@ $this -> end();
 					</ul>
 				</div>
 				<div id="panel-collapse-1" class="collapse in">
+					<?php if(isset( $search_result ) == TRUE ): ?>
 					<div class="panel-body">
+						<?php if(empty( $search_result ) == FALSE && is_array($search_result) == TRUE ): ?>
 						<div class="alert alert-warning fade in alert-dismissable">
 							<button type="button" class="close" data-dismiss="alert" aria-hidden="true">
 								&times;
 							</button>
-							<strong>1,411</strong> results for <i>something keyword</i>
+							<strong><?php echo count($search_result);?></strong> kết quả <i>được tìm thấy</i>
 						</div>
 						<div class="the-box">
 							<div class="table-responsive">
@@ -67,11 +66,43 @@ $this -> end();
 											<th>Cập nhật</th>
 										</tr>
 									</thead>
-									<tbody></tbody>
+									<tbody>
+										<?php foreach ($search_result as $value):?>
+											<tr class="odd gradeX">
+				                                <td><?php echo $value['Account']['username'];?></td>
+				                                <td><?php echo $value['Account']['full_name'];?></td>
+				                                <td>
+				                                    <?php if(empty($value['Account']['image']) ==FALSE &&  file_exists(WWW_ROOT."img/uploads/users/".$value['Account']['image'])):?>
+				                                    	<?php echo $this -> Html -> image("uploads/users/".$value['Account']['image'], array('alt' => 'avatar','height' => '50px', 'width' => '50px'));?>
+				                                    <?php else: ?>
+				                                        <img src="" height="50px" width="50px" />
+				                                    <?php endif;?>
+				                                </td>
+				                                <?php if ($value['Account']['role'] == 1):?>
+				                                    <td class="center">Admin</td>
+				                                <?php else: ?>
+				                                    <td class="center">Nhân viên</td>
+				                                <?php endif;?>
+				                                <td class="center">
+				                                	<a class="btn btn-mini btn-primary" href=<?php echo $this->Html->url( '/', true );?>account/details/<?php echo $value['Account']['user_id'];?>>Sửa</a>
+				                                	<a class="btn btn-mini btn-danger" href=<?php echo $this->Html->url( '/', true );?>account/details/<?php echo $value['Account']['user_id'];?>>Xóa</a>
+				                                </td>
+											</tr>
+										<?php endforeach;?>
+									</tbody>
 								</table>
 							</div>
 						</div>
+						<?php else: ?>
+						<div class="alert alert-warning fade in alert-dismissable">
+							<button type="button" class="close" data-dismiss="alert" aria-hidden="true">
+								&times;
+							</button>
+							<strong>Không có kết quả</strong> nào được tìm thấy <i>theo yêu cầu</i>
+						</div>
+						<?php endif; ?>
 					</div>
+					<?php endif ;?>
 				</div>
 			</div><!-- /.the-box full -->
 		</div><!-- /.container-fluid -->

@@ -11,12 +11,14 @@
 		function __construct(){
 			parent::__construct();
 			$this -> validate = array(
+				/*
 				'adminID' => array(
-					'alphaNumeric' => array(
-                    'rule' => array('custom', '/^[a-zA-Z0-9]*$/i'),
-                    'message' => Configure::read(SYS_ACC_000.'.AdminUserIDAlphaNum')
-                	)
-				),
+									'alphaNumeric' => array(
+									'rule' => array('custom', '/^[a-zA-Z0-9]*$/i'),
+									'message' => Configure::read(SYS_ACC_000.'.AdminUserIDAlphaNum')
+									)
+								),*/
+				
 				'full_name' =>array(
 					'NotEmpty' => array(
 						'rule' => 'notEmpty',
@@ -69,26 +71,30 @@
 	                    'rule' => array('maxLength', 64),
 	                    'message'   => Configure::read(SYS_ACC_000.'.AdminPassMaxLength')
 	                ),
-	                'alphaNumeric' => array(
-	                    'rule' => array('custom', '/^[a-zA-Z0-9]*$/i'),
-	                    'message' => Configure::read(SYS_ACC_000.'.AdminPassAlphaNum')
-	                ),
-	                'checkPassMatchAdminID' => array(
-	                    'rule' => 'checkPassMatchAdminID',
-	                    'message'   => Configure::read(SYS_ACC_000.'.EqualAdminIdPass')
-	                )
+	                /*
+					'alphaNumeric' => array(
+											'rule' => array('custom', '/^[a-zA-Z0-9]*$/i'),
+											'message' => Configure::read(SYS_ACC_000.'.AdminPassAlphaNum')
+										),*/
+					
+	                /*
+					'checkPassMatchAdminID' => array(
+											'rule' => 'checkPassMatchAdminID',
+											'message'   => Configure::read(SYS_ACC_000.'.EqualAdminIdPass')
+										)*/
+					
 	            ),
-           		'email' => array(
-	                'NotEmpty' => array(
-	                    'rule'    => 'NotEmpty',
-	                    'required' => true,
-	                    'message' => Configure::read(SYS_ACC_000.'.EmailRequire')
-	                ),
-	                'email' => array(
-	                    'rule' => array('email', true),
-	                    'message' => Configure::read(SYS_COM_000.'.WrongEmail')
-	                )
-	            )
+		       'email' => array(
+					'NotEmpty' => array(
+						'rule'    => 'NotEmpty',
+						'required' => true,
+						'message' => Configure::read(SYS_ACC_000.'.EmailRequire')
+					),
+					'email' => array(
+						'rule' => array('email', true),
+						'message' => Configure::read(SYS_COM_000.'.WrongEmail')
+					)
+				)
 			);
 		}
 		public function setDBMapping( $input_data ) {
@@ -105,6 +111,9 @@
 	        if(isset($input_data['full_name']) == TRUE ) {
 	            $data[$this->alias]['full_name'] = $input_data['full_name'];
 	        }
+			if(isset($input_data['email']) == TRUE ) {
+	            $data[$this->alias]['email'] = $input_data['email'];
+	        }
 	        if(isset($input_data['role']) == TRUE ) {
 	            $data[$this->alias]['role'] = $input_data['role'];
 	        }
@@ -118,6 +127,11 @@
 	        $this->set($data);
 	    }
  		public function beforeSave($options=array()) {
+ 			//do the actual uploading of the file. First arg is the tmp name, second arg is 
+            //where we are putting it
+
+              //prepare the filename for database entry
+             $this->data[$this->alias]['image'] = $this->data[$this->alias]['image']['name'];
 	        // get new password
 	        if(empty($this->data[$this->alias]['password']) != TRUE){
 	            $password = $this->data[$this->alias]['password'];
